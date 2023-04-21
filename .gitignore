@@ -1,0 +1,45 @@
+# compiled output
+/build
+/dist
+/out-tsc
+
+# dependencies
+node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/data
+/coverage
+npm-debug.log*
+debug.log
+yarn-debug.log*
+yarn-error.log
+**/logs
+*.log
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Env files
+.env
+.env.*
+
+# My trash
+fastexperiment.ts

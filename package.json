@@ -1,7 +1,7 @@
 {
   "name": "vencura-api",
   "version": "1.0.0",
-  "description": "Safe and reliable financial service for multyple wallets and users web3 knowledge levels api",
+  "description": "Safe and reliable financial service for multiple wallets and users web3 knowledge levels api",
   "main": "src/servert.s",
   "repository": "git@github.com:MariSpirandelli/vencura-api.git",
   "author": "Marianna Tannus Spirandelli",

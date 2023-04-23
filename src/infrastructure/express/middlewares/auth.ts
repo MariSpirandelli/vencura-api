@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import jwt, { Algorithm } from 'jsonwebtoken';
 import config from '../../config';
 import bunyan from 'bunyan';
-import { Credential, DynamicInfo } from '../../../types/authRequest';
+import { Credential, AuthInfo } from '../../../types/authRequest';
 
 const logger = bunyan.createLogger({ name: 'express::middlewares::auth' });
 
@@ -44,14 +44,14 @@ export default async function auth(req: Request, res: Response, next: NextFuncti
       });
     }
 
-    const dynamicInfo: DynamicInfo = {
+    const authInfo: AuthInfo = {
       verifiedCredentials,
       email,
       isNewUser: new_user,
       environmentId: environment_id,
     };
 
-    (req as any).dynamicInfo = dynamicInfo;
+    (req as any).authInfo = authInfo;
     logger.info(decodedToken);
 
     next();

@@ -1,8 +1,8 @@
 import { Request } from 'express';
 
-export type AuthRequest = Request & { dynamicInfo: DynamicInfo };
+export type AuthRequest = Request & { authInfo: AuthInfo };
 
-export interface DynamicInfo {
+export interface AuthInfo {
   verifiedCredentials: Credential[];
   email?: string;
   environmentId: string;

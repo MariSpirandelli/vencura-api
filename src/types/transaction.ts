@@ -1,0 +1,1 @@
+export type TransactionStatus = 'COMPLETE' | 'IN_PROCESS' | 'FAILED'; 

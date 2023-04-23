@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import helmet from 'helmet';
+import mung from 'express-mung';
 // import routes from '../../routes';
 import errorHandler from './middlewares/errorHandler';
 import requestLogger from './middlewares/requestLogger';
@@ -24,9 +25,8 @@ const createServer = () => {
       origin: true,
     }),
   );
-
   app.use(express.json());
-
+  app.use(mung.json(securityCheck));
   app.use(helmet());
   app.use(requestLogger());
 

@@ -30,15 +30,15 @@ export default async function auth(req: Request, res: Response, next: NextFuncti
     const { verified_credentials, email, new_user, environment_id } = decodedToken as any;
     let verifiedCredentials: Credential[] = [];
     for (let credential of verified_credentials) {
-      const { address, chain, userId, publicIdentifier, walletName, walletProvider, format, email } = credential;
+      const { address, chain, id, public_identifier, wallet_name, wallet_provider, format, email } = credential;
 
       verifiedCredentials.push({
         address,
         chain,
-        userId,
-        publicIdentifier,
-        walletName,
-        walletProvider,
+        userId: id,
+        publicIdentifier: public_identifier,
+        walletName: wallet_name,
+        walletProvider: wallet_provider,
         format,
         email,
       });
@@ -52,8 +52,6 @@ export default async function auth(req: Request, res: Response, next: NextFuncti
     };
 
     (req as any).authInfo = authInfo;
-    logger.info(decodedToken);
-
     next();
   });
 }

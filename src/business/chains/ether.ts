@@ -1,7 +1,7 @@
 import { JsonRpcProvider, ethers } from 'ethers';
 import IChain from '../interfaces/iChain';
 import { WalletInfo, WalletMessage, WalletTransferData } from '../../types/wallet';
-import bip39 from 'bip39';
+import * as bip39 from 'bip39';
 import config from '../../infrastructure/config';
 
 class Ether implements IChain {
@@ -9,7 +9,7 @@ class Ether implements IChain {
   // private readonly GAS_LIMIT: string = process.env.GAS_LIMIT as string;
 
   private getProvider(): JsonRpcProvider {
-    return new ethers.InfuraProvider(config.infuraProvider.goerli);
+    return new ethers.JsonRpcProvider(config.infuraProvider.goerli);
   }
 
   public async create(): Promise<WalletInfo> {

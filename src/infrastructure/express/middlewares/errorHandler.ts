@@ -6,12 +6,6 @@ import { InternalError } from '../errors/internal';
 const logger = bunyan.createLogger({ name: 'ErrorHandler' });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const asyncHandler = (fn: (...params: any[]) => Promise<any>) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    fn(req, res, next).catch(next);
-  };
-};
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const errorHandler = (err: any, _: Request, res: Response, next: NextFunction) => {
   if (res.headersSent) {
     return next(err);

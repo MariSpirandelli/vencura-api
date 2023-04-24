@@ -1,6 +1,6 @@
 import { Chain } from '../types/chain';
 import IWalletController from './interfaces/iWallet';
-import { WalletInfo, WalletMessage, WalletTransferData } from '../types/wallet';
+import { WalletBalanceInfo, WalletInfo, WalletMessage, WalletTransferData } from '../types/wallet';
 import ChainFactory from '../business/factories/chainFactory';
 import { IUserWalletRepository } from '../domain/repositories/interfaces/iUserWalletRepository';
 import userWalletRepository from '../domain/repositories/userWalletRepository';
@@ -16,15 +16,27 @@ class WalletController implements IWalletController {
 
     return address;
   }
-  
-  public async getById(id: number): Promise<IUserWallet | undefined>{
+
+  public async getById(id: number): Promise<IUserWallet | undefined> {
     return this.userWalletRepository.fetch(id);
   }
-  
-  public async getByUserId(userId: number): Promise<IUserWallet | undefined>{
+
+  public async getByUserId(userId: number): Promise<IUserWallet | undefined> {
     return (await this.userWalletRepository.getByUserId(userId))[0];
   }
-  
+
+  public async getBalanceByUserId(userId: number): Promise<WalletBalanceInfo> {
+    const userWallet = (await this.userWalletRepository.getByUserId(userId))[0];
+    const { address, id } = userWallet;
+    const balance = await this.getBalance(address);
+
+    return {
+      id,
+      address,
+      balance,
+    };
+  }
+
   public async getBalance(address: string, chain: Chain = 'ETHER'): Promise<string> {
     return ChainFactory.getChainByType(chain).getBalance(address);
   }

@@ -2,7 +2,7 @@ import cors from 'cors';
 import express, { Request, Response } from 'express';
 import helmet from 'helmet';
 import mung from 'express-mung';
-// import routes from '../../routes';
+import routes from '../../routes';
 import errorHandler from './middlewares/errorHandler';
 import requestLogger from './middlewares/requestLogger';
 import auth from './middlewares/auth';
@@ -54,7 +54,7 @@ const createServer = () => {
     return res.sendStatus(200);
   });
 
-  // app.use('/api', routes);
+  app.use('/api', routes);
 
   app.use(errorHandler);
 

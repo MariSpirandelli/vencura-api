@@ -66,7 +66,7 @@ class UserController implements IUserController {
   }
 
   getByExternalUserId(externalUserId: string): Promise<IUser | undefined> {
-    return this.userRepository.fetch(parseInt(externalUserId, 10));
+    return this.userRepository.getByExternalUserId(externalUserId);
   }
 }
 

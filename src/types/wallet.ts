@@ -14,3 +14,9 @@ export interface WalletTransferData {
   toAddress: string;
   amount: string;
 }
+
+export interface WalletBalanceInfo {
+  id: number;
+  address: string;
+  balance: string;
+}

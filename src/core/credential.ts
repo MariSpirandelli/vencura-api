@@ -35,6 +35,10 @@ class CredentialController implements ICredentialController {
     return this.credentialRepo.update(credential.userId, externalCredential);
   }
 
+  getByExternalCredentialsList(externalCredentials: string[]): Promise<IExternalCredential[]>{
+    return this.credentialRepo.getByExternalCredentialsList(externalCredentials);
+  }
+
   getByExternalUserId(externalUserId: string): Promise<IExternalCredential | undefined> {
     return this.credentialRepo.getByExternalCredentialId(externalUserId);
   }

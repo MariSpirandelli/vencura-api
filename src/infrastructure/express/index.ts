@@ -43,7 +43,10 @@ const createServer = () => {
     if (isNewUser) {
       user = await userControl.create(externalInfo);
     } else {
-      user = await userControl.getByExternalUserId(verifiedCredentials[0].userId);
+      user = await Promise.all([
+        userControl.getByExternalUserId(verifiedCredentials[0].userId),
+        userControl.updateCredentials(externalInfo),
+      ]);
     }
 
     logger.info('[login] User logged in', { ipAddress: req.ip, referrer: req.get('Referrer'), user });

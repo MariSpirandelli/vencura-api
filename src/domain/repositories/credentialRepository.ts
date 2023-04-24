@@ -1,4 +1,4 @@
-import  IExternalCredential from '../models/interfaces/iExternalCredential';
+import IExternalCredential from '../models/interfaces/iExternalCredential';
 import { ExternalCredentialInput, ExternalCredential } from '../models/externalCredential';
 import { ICredentialRepository } from './interfaces/iCredentialRepository';
 
@@ -19,10 +19,12 @@ class CredentialRepository implements ICredentialRepository {
     return ExternalCredential.query().where({ id }).select().first();
   }
 
+  async getByExternalCredentialsList(externalCredentials: string[]): Promise<IExternalCredential[]> {
+    return ExternalCredential.query().whereIn('external_user_id', externalCredentials);
+  }
+
   async getByExternalCredentialId(externalCredentialId: string): Promise<IExternalCredential | undefined> {
-    return ExternalCredential.query()
-      .where('external_user_id', externalCredentialId)
-      .first();
+    return ExternalCredential.query().where('external_user_id', externalCredentialId).first();
   }
 }
 

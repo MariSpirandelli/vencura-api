@@ -11,7 +11,7 @@ export class ExternalCredential extends BaseModel implements IExternalCredential
   format!: CredentialFormat;
   value!: string;
   chain?: string;
-  origin!: 'Dynamic';
+  origin!: 'DYNAMIC';
 
   user?: User;
 

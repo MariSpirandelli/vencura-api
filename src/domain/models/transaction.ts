@@ -14,7 +14,7 @@ export class Transaction extends BaseModel implements ITransaction {
   fromUserWalletId!: number;
   toUserWalletId?: number;
   toWalletAddress!: string;
-  amount!: number;
+  amount!: string;
   receipt?: string;
   status!: TransactionStatus;
   failReason?: string;

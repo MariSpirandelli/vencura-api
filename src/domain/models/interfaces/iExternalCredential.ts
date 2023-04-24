@@ -7,5 +7,5 @@ export default interface IExternalCredential extends IBaseModel{
     format: CredentialFormat
     value: string;
     chain?: string;
-    origin: 'Dynamic'
+    origin: 'DYNAMIC'
 }

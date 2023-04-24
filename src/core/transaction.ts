@@ -73,7 +73,7 @@ class TransactionController implements ITransactionController {
       fromAddress: fromUserWallet.address,
       fromPrivateKey: fromUserWallet.privateKey,
       toAddress: toUserWallet?.address || transactionInfo.toWalletAddress,
-      amount: transactionInfo.amount.toString(),
+      amount: transactionInfo.amount,
     };
 
     return walletTransferData;

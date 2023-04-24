@@ -3,7 +3,8 @@ import IWalletController from './interfaces/iWallet';
 import { WalletInfo, WalletMessage, WalletTransferData } from '../types/wallet';
 import ChainFactory from '../business/factories/chainFactory';
 import { IUserWalletRepository } from '../domain/repositories/interfaces/iUserWalletRepository';
-import userWalletRepository from '../domain/repositories/userWallet';
+import userWalletRepository from '../domain/repositories/userWalletRepository';
+import { IUserWallet } from '../domain/models/interfaces/iUserWallet';
 
 class WalletController implements IWalletController {
   constructor(private userWalletRepository: IUserWalletRepository) {}
@@ -15,7 +16,15 @@ class WalletController implements IWalletController {
 
     return address;
   }
-
+  
+  public async getById(id: number): Promise<IUserWallet | undefined>{
+    return this.userWalletRepository.fetch(id);
+  }
+  
+  public async getByUserId(userId: number): Promise<IUserWallet | undefined>{
+    return (await this.userWalletRepository.getByUserId(userId))[0];
+  }
+  
   public async getBalance(address: string, chain: Chain = 'ETHER'): Promise<string> {
     return ChainFactory.getChainByType(chain).getBalance(address);
   }

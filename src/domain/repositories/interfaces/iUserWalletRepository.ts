@@ -4,4 +4,5 @@ import { UserWalletInput } from '../../models/userWallet';
 export interface IUserWalletRepository {
   persist: (userWallet: UserWalletInput) => Promise<IUserWallet>;
   fetch: (id: number) => Promise<IUserWallet | undefined>;
+  getByUserId: (userId: number) => Promise<IUserWallet[]>;
 }

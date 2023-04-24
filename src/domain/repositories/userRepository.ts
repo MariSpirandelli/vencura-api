@@ -22,7 +22,7 @@ class UserRepository implements IUserRepository {
   async getByExternalUserId(externalUserId: string): Promise<IUser | undefined> {
     return User.query()
       .leftJoin('external_credentials', 'credentials.user_id', 'users.id')
-      .where('external_user_id', externalUserId)
+      .where('external_credentials.external_user_id', externalUserId)
       .first();
   }
 }

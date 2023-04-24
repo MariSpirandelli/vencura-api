@@ -2,7 +2,7 @@ import { createLogger } from 'bunyan';
 import { IUser } from '../domain/models/interfaces/iUser';
 import { UserInput } from '../domain/models/user';
 import { IUserRepository } from '../domain/repositories/interfaces/iUserRepository';
-import userRepository from '../domain/repositories/user';
+import userRepository from '../domain/repositories/userRepository';
 import { InternalError } from '../infrastructure/express/errors';
 import IUserController from './interfaces/iUser';
 import IWalletController from './interfaces/iWallet';

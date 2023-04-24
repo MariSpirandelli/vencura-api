@@ -7,15 +7,17 @@ import { User } from './user';
 import { TransactionStatus } from '../../types/transaction';
 import { UserWallet } from './userWallet';
 
-export type TransactionInput = Pick<ITransaction, 'fromUserWalletId' | 'toUserWalletId' | 'toWalletAddress' | 'amount'>;
+export type TransactionInput = Pick<ITransaction, 'idempotencyKey' | 'fromUserWalletId' | 'toUserWalletId' | 'toWalletAddress' | 'amount' | 'receipt' | 'failReason' | 'status'>;
 
 export class Transaction extends BaseModel implements ITransaction {
+  idempotencyKey!: string;
   fromUserWalletId!: number;
   toUserWalletId?: number;
   toWalletAddress!: string;
   amount!: number;
+  receipt?: string;
   status!: TransactionStatus;
-  failReason?: string | undefined;
+  failReason?: string;
 
   fromUserWallet?: UserWallet;
   toUserWallet?: UserWallet;

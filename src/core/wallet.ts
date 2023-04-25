@@ -5,6 +5,7 @@ import ChainFactory from '../business/factories/chainFactory';
 import { IUserWalletRepository } from '../domain/repositories/interfaces/iUserWalletRepository';
 import userWalletRepository from '../domain/repositories/userWalletRepository';
 import { IUserWallet } from '../domain/models/interfaces/iUserWallet';
+import { encode } from 'punycode';
 
 class WalletController implements IWalletController {
   constructor(private userWalletRepository: IUserWalletRepository) {}
@@ -39,6 +40,13 @@ class WalletController implements IWalletController {
 
   public async getBalance(address: string, chain: Chain = 'ETHER'): Promise<string> {
     return ChainFactory.getChainByType(chain).getBalance(address);
+  }
+
+  public async signUserMessage(userId: number, rawMessage: string): Promise<string> {
+    const { privateKey } = (await this.userWalletRepository.getByUserId(userId))[0];
+    const message = encode(rawMessage);
+
+    return this.signMessage({ message, privateKey });
   }
 
   public async signMessage(walletMessage: WalletMessage, chain: Chain = 'ETHER'): Promise<string> {

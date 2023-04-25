@@ -20,7 +20,8 @@ const dynamic = {
 const infuraProvider = {
   apiSecret: process.env.INFURA_API_SECRET,
   apiKey: process.env.INFURA_API_KEY,
-  goerli: process.env.INFURA_GOERLI
+  goerli: process.env.INFURA_GOERLI,
+  seopolia: process.env.INFURA_SEOPOLIA
 }
 
 export default {

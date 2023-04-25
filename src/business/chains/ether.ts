@@ -36,6 +36,7 @@ class Ether implements IChain {
     const walletSigner = wallet.connect(provider);
     const gasPrice: bigint = ((await provider.getFeeData()).gasPrice || BigInt(0));
     const gasLimit = (await provider.getBlock('latest'))?.gasLimit;
+
     const tx = {
       to: toAddress,
       value: ethers.parseEther(amount),

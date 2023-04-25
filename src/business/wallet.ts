@@ -22,7 +22,7 @@ export default class Wallet<T extends IChain> implements IWallet {
     const { fromAddress, amount } = walletTransferData;
     const currBalance = await this.getBalance(fromAddress);
 
-    if (BigInt(currBalance) < BigInt(amount)) {
+    if (Number(currBalance) < Number(amount)) {
       throw new BadRequestError('Not enough balance');
     }
 

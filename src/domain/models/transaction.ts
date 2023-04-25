@@ -28,7 +28,7 @@ export class Transaction extends BaseModel implements ITransaction {
 
   $beforeInsert() {
     super.$beforeInsert();
-    this.status = 'IN_PROCESS';
+    this.status = !this.status ? 'IN_PROCESS': this.status;
   }
 
   static get relationMappings() {

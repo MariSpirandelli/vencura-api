@@ -8,6 +8,6 @@ export default interface ITransaction extends IBaseModel{
     toWalletAddress: string;
     amount: string;
     receipt?: string;
-    status: TransactionStatus;
+    status?: TransactionStatus;
     failReason?: string;
 }

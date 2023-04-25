@@ -28,7 +28,7 @@ class TransactionController implements ITransactionController {
       status = 'COMPLETE';
     } catch (error: any) {
       status = 'FAILED';
-      failReason = error.message;
+      failReason = error?.info?.error?.message || error?.message;
 
       logger.error(`[request] Error while executing transaction`, error);
     }

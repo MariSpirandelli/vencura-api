@@ -5,11 +5,8 @@ import * as bip39 from 'bip39';
 import config from '../../infrastructure/config';
 
 class Ether implements IChain {
-  private readonly PROVIDER: string = process.env.PROVIDER as string;
-  // private readonly GAS_LIMIT: string = process.env.GAS_LIMIT as string;
-
   private getProvider(): JsonRpcProvider {
-    return new ethers.JsonRpcProvider(config.infuraProvider.goerli);
+    return new ethers.JsonRpcProvider(config.infuraProvider.seopolia);
   }
 
   public async create(): Promise<WalletInfo> {
@@ -37,17 +34,22 @@ class Ether implements IChain {
     const wallet = new ethers.Wallet(fromPrivateKey);
     const provider = this.getProvider();
     const walletSigner = wallet.connect(provider);
-    const gasPrice = (await provider.getFeeData()).gasPrice;
+    const gasPrice: bigint = ((await provider.getFeeData()).gasPrice || BigInt(0));
+    const gasLimit = (await provider.getBlock('latest'))?.gasLimit;
     const tx = {
       to: toAddress,
       value: ethers.parseEther(amount),
       gasPrice: gasPrice && ethers.parseUnits(gasPrice.toString(), 'gwei'),
-      // gasLimit: ethers.parseUnits(this.GAS_LIMIT, 'wei'),
+      gasLimit
     };
 
-    const txResponse = await walletSigner.sendTransaction(tx);
+    try {
+      const txResponse = await walletSigner.sendTransaction(tx);
 
-    return txResponse.hash;
+      return txResponse.hash;
+    } catch (error: any) {
+      throw new Error(error?.info?.error?.message || error?.message);
+    }
   }
 }
 

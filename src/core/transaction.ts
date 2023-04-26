@@ -46,8 +46,16 @@ class TransactionController implements ITransactionController {
     });
   }
   private async validateTransferRequest(transactionInfo: TransactionInput) {
-    if (!transactionInfo?.fromUserWalletId) {
+    if (!transactionInfo?.fromUserWalletId || (!transactionInfo.toWalletAddress && !transactionInfo.toUserWalletId)) {
       throw new BadRequestError('Wallet info is mandatory');
+    }
+
+    if (!transactionInfo.idempotencyKey) {
+      throw new BadRequestError('Idempotency key is mandatory');
+    }
+
+    if (!transactionInfo.amount) {
+      throw new BadRequestError('Amount is mandatory');
     }
 
     const existingTransaction = await this.transactionRepo.getByIdempotencyKey(transactionInfo.idempotencyKey);

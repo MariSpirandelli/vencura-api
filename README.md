@@ -1,7 +1,8 @@
 # Vencura system
 
-Vencura is a safe and reliable financial service for multiple wallets, for users with all levels of web3 knowledge.
-It creates a custodial ETH wallet and handle basic actions on the wallet like: 
+Vencura is a safe and reliable financial management and budgeting app, for users with all levels of web3 knowledge. With Vencura you can create multiple wallets to represent different budget categories or accounts, such as one for groceries, one for entertainment, one for savings, etc. Each wallet would have its own balance and transaction history, allowing you to easily track your spending and manage your budget. You could also set up automated transfers between wallets, such as transferring a certain percentage of your income to your savings wallet each month.
+
+For now, it creates a custodial **ETH** wallet and handle basic actions on the wallet like: 
  - sign, 
  - get balance and 
  - transfer between wallets
@@ -194,7 +195,7 @@ curl --location --request GET 'http://localhost:3000/api/transactions' \
     "toWalletAddress": string;
     "amount": string;
     "receipt": string;
-    "status": TransactionStatus;
+    "status": 'COMPLETE' | 'IN_PROCESS' | 'FAILED';
     "failReason": string;
     }
 ]

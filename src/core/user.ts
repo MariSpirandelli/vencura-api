@@ -7,7 +7,7 @@ import { InternalError } from '../infrastructure/express/errors';
 import IUserController from './interfaces/iUser';
 import IWalletController from './interfaces/iWallet';
 import walletController from './wallet';
-import { AuthInfo } from '../types/authRequest';
+import { AuthInfo, Credential } from '../types/authRequest';
 import ICredentialController from './interfaces/iCredential';
 import credentialController from './credential';
 import IExternalCredential from '../domain/models/interfaces/iExternalCredential';
@@ -15,7 +15,11 @@ import IExternalCredential from '../domain/models/interfaces/iExternalCredential
 const logger = createLogger({ name: 'core::user' });
 
 class UserController implements IUserController {
-  constructor(private userRepository: IUserRepository, private userWalletController: IWalletController, private credentialControler: ICredentialController) {}
+  constructor(
+    private userRepository: IUserRepository,
+    private userWalletController: IWalletController,
+    private credentialControler: ICredentialController,
+  ) {}
   async create(userInfo: AuthInfo): Promise<IUser> {
     try {
       const { verifiedCredentials, email } = userInfo;
@@ -27,7 +31,7 @@ class UserController implements IUserController {
       }
 
       await this.credentialControler.create(newUser.id, verifiedCredentials);
-      
+
       await this.userWalletController.create(newUser.id);
 
       return newUser;
@@ -42,8 +46,8 @@ class UserController implements IUserController {
     return this.userRepository.update(userId, userInfo);
   }
 
-  async updateCredentials(userInfo: AuthInfo) : Promise<IExternalCredential[]>{
-    const {verifiedCredentials} = userInfo
+  async updateCredentials(userInfo: AuthInfo): Promise<IExternalCredential[]> {
+    const { verifiedCredentials } = userInfo;
 
     const externalCredentialsIds = verifiedCredentials.map((credential) => credential.userId);
     const existentCredentials = await credentialController.getByExternalCredentialsList(externalCredentialsIds);
@@ -52,17 +56,17 @@ class UserController implements IUserController {
       return [];
     }
 
-    const newCredentials = [];
+    const newCredentials: Credential[] = [];
     verifiedCredentials.map((credential) => {
-      const existent = existentCredentials.find(({externalUserId}) => externalUserId === credential.userId);
+      const existent = existentCredentials.find(({ externalUserId }) => externalUserId === credential.userId);
       if (existent) {
-        return
+        return;
       }
 
       newCredentials.push(credential);
     });
 
-    return this.credentialControler.create(existentCredentials[0].userId, verifiedCredentials);
+    return this.credentialControler.create(existentCredentials[0].userId, newCredentials);
   }
 
   getByExternalUserId(externalUserId: string): Promise<IUser | undefined> {

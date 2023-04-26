@@ -47,7 +47,7 @@ class Ether implements IChain {
     try {
       const txResponse = await walletSigner.sendTransaction(tx);
 
-      return txResponse.hash;
+      return txResponse?.hash;
     } catch (error: any) {
       throw new Error(error?.info?.error?.message || error?.message);
     }

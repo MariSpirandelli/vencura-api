@@ -11,7 +11,8 @@ class TransactionRepository implements ITransactionRepository {
     return Transaction.query()
       .leftJoin('user_wallets', 'transactions.from_user_wallet_id', 'user_wallets.id')
       .leftJoin('users', 'users.id', 'user_wallets.user_id')
-      .where('users.id', userId);
+      .where('users.id', userId)
+      .orderBy('created_at', 'DESC');
   }
 
   async fetch(id: number): Promise<ITransaction | undefined> {

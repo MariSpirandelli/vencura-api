@@ -11,36 +11,32 @@ class CredentialController implements ICredentialController {
   create(userId: number, externalCredentials: Credential[]): Promise<IExternalCredential[]> {
     const credentials: ExternalCredentialInput[] = [];
     externalCredentials.map((credential) => {
-      credentials.push({
-        userId,
-        externalUserId: credential.userId,
-        format: credential.format,
-        value: credential.publicIdentifier,
-        chain: credential.chain,
-      });
+      credentials.push(this.parseCredential(userId, credential));
     });
 
     return this.credentialRepo.persist(credentials);
   }
 
   update(userId: number, credential: Credential): Promise<IExternalCredential | undefined> {
-    const externalCredential: ExternalCredentialInput = {
+    return this.credentialRepo.update(credential.userId, this.parseCredential(userId, credential));
+  }
+
+  getByExternalCredentialsList(externalCredentials: string[]): Promise<IExternalCredential[]> {
+    return this.credentialRepo.getByExternalCredentialsList(externalCredentials);
+  }
+
+  getByExternalUserId(externalUserId: string): Promise<IExternalCredential | undefined> {
+    return this.credentialRepo.getByExternalCredentialId(externalUserId);
+  }
+
+  private parseCredential(userId: number, credential: Credential): ExternalCredentialInput {
+    return {
       userId,
       externalUserId: credential.userId,
       format: credential.format,
       value: credential.publicIdentifier,
       chain: credential.chain,
     };
-
-    return this.credentialRepo.update(credential.userId, externalCredential);
-  }
-
-  getByExternalCredentialsList(externalCredentials: string[]): Promise<IExternalCredential[]>{
-    return this.credentialRepo.getByExternalCredentialsList(externalCredentials);
-  }
-
-  getByExternalUserId(externalUserId: string): Promise<IExternalCredential | undefined> {
-    return this.credentialRepo.getByExternalCredentialId(externalUserId);
   }
 }
 

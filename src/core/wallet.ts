@@ -6,6 +6,7 @@ import { IUserWalletRepository } from '../domain/repositories/interfaces/iUserWa
 import userWalletRepository from '../domain/repositories/userWalletRepository';
 import { IUserWallet } from '../domain/models/interfaces/iUserWallet';
 import { encode } from 'punycode';
+import { NotFoundError } from '../infrastructure/express/errors';
 
 class WalletController implements IWalletController {
   constructor(private userWalletRepository: IUserWalletRepository) {}
@@ -28,6 +29,11 @@ class WalletController implements IWalletController {
 
   public async getBalanceByUserId(userId: number): Promise<WalletBalanceInfo> {
     const userWallet = (await this.userWalletRepository.getByUserId(userId))[0];
+
+    if (!userWallet) {
+      throw new NotFoundError('Wallet not found');
+    }
+
     const { address, id } = userWallet;
     const balance = await this.getBalance(address);
 
@@ -43,10 +49,15 @@ class WalletController implements IWalletController {
   }
 
   public async signUserMessage(userId: number, rawMessage: string): Promise<string> {
-    const { privateKey } = (await this.userWalletRepository.getByUserId(userId))[0];
+    const userWallet = (await this.userWalletRepository.getByUserId(userId))[0];
+
+    if (!userWallet) {
+      throw new NotFoundError('Wallet not found');
+    }
+
     const message = encode(rawMessage);
 
-    return this.signMessage({ message, privateKey });
+    return this.signMessage({ message, privateKey: userWallet.privateKey });
   }
 
   public async signMessage(walletMessage: WalletMessage, chain: Chain = 'ETHER'): Promise<string> {

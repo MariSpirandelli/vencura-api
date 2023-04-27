@@ -1,8 +1,20 @@
+let connection;
+if (process.env.NODE_ENV === 'development') {
+  connection =
+    process.env.DATABASE_URL ||
+    'postgresql://user:password@db:5432/vencura-dev?schema=public';
+} else {
+  connection = {
+    connectionString:
+      process.env.DATABASE_URL ||
+      'postgresql://user:password@db:5432/vencura-dev?schema=public',
+    ssl: { rejectUnauthorized: false },
+  };
+}
+
 const knex = {
   client: 'postgresql',
-  connection:
-    process.env.DATABASE_URL ||
-    'postgresql://user:password@db:5432/vencura-dev?schema=public',
+  connection,
   migrations: {
     tableName: 'knex_migrations',
     directory: `${__dirname}/../orm/objection/migrations`,

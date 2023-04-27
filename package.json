@@ -9,6 +9,7 @@
   "private": false,
   "scripts": {
     "dev": "ts-node-dev --no-notify src/server.ts | bunyan",
+    "build": "yarn install && tsc",
     "start": "ts-node src/server.ts | bunyan",
     "test": "jest",
     "lint": "eslint .",

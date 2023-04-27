@@ -34,14 +34,14 @@ class Ether implements IChain {
     const wallet = new ethers.Wallet(fromPrivateKey);
     const provider = this.getProvider();
     const walletSigner = wallet.connect(provider);
-    const gasPrice: bigint = ((await provider.getFeeData()).gasPrice || BigInt(0));
-    const gasLimit = (await provider.getBlock('latest'))?.gasLimit;
+    const gasPrice: bigint = (await provider.getFeeData()).gasPrice || BigInt(0);
+    const gasLimit = BigInt(21000);
 
     const tx = {
       to: toAddress,
       value: ethers.parseEther(amount),
-      gasPrice: gasPrice && ethers.parseUnits(gasPrice.toString(), 'gwei'),
-      gasLimit
+      gasPrice: gasPrice && ethers.parseUnits(gasPrice.toString(), 'wei'),
+      gasLimit,
     };
 
     try {

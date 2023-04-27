@@ -7,6 +7,9 @@
   "author": "Marianna Tannus Spirandelli",
   "license": "MIT",
   "private": false,
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "dev": "ts-node-dev --no-notify src/server.ts | bunyan",
     "build": "yarn install && tsc",

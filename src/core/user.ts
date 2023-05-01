@@ -27,7 +27,7 @@ class UserController implements IUserController {
       const newUser = await this.userRepository.persist({ email });
 
       if (!newUser) {
-        throw new InternalError('An error occurred while processing your Request. Try again later');
+        throw new InternalError('Could not create user');
       }
 
       await this.credentialControler.create(newUser.id, verifiedCredentials);
@@ -69,8 +69,12 @@ class UserController implements IUserController {
     return this.credentialControler.create(existentCredentials[0].userId, newCredentials);
   }
 
-  getByExternalUserId(verifiedCredentials: Credential[]): Promise<IUser | undefined> {
-    const externalUserIds = verifiedCredentials.map((credential) => credential.userId);
+  async getByExternalUserId(verifiedCredentials: Credential[]): Promise<IUser | undefined> {
+    const externalUserIds = verifiedCredentials?.map((credential) => credential.userId);
+
+    if (!externalUserIds?.length) {
+      return;
+    }
     
     return this.userRepository.getByExternalUserId(externalUserIds);
   }

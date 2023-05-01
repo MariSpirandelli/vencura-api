@@ -42,6 +42,30 @@ describe('User core', () => {
       expect(userWalletSpy).toBeCalledWith(1);
       expect(newUser).toBe(mokedUser);
     });
+
+    it('it should throw exception if user not created', async () => {
+      const mokedUser = undefined;
+      jest.spyOn(userRepository, 'persist').mockResolvedValue(mokedUser as any);
+
+      await expect(userController.create(authInfo)).rejects.toThrow(
+        'An error occurred while processing your Request. Try again later',
+      );
+    });
+
+    it('it should throw exception if an error ocurrs while creating user wallets', async () => {
+      const mokedUser = { id: 1, createdAt };
+      jest.spyOn(userRepository, 'persist').mockResolvedValue(mokedUser);
+      const mokedUserWalletCreate = jest.fn(() => {
+        throw new Error('Transaction failed');
+      });
+
+      jest.spyOn(credentialControler, 'create').mockResolvedValue([savedCredential]);
+      jest.spyOn(userWalletController, 'create').mockImplementation(mokedUserWalletCreate);
+
+      await expect(userController.create(authInfo)).rejects.toThrow(
+        'An error occurred while processing your Request. Try again later',
+      );
+    });
   });
 
   describe('When updating user credentials', () => {
@@ -71,6 +95,23 @@ describe('User core', () => {
         await userController.updateCredentials(authInfo);
         expect(credentialSpy).toBeCalledWith(1, [newCredential]);
       });
+    });
+  });
+
+  describe('When getting users by credentials', () => {
+    it('should return undefined if no credential is provided', async () => {
+      const user = await userController.getByExternalUserId([]);
+
+      expect(user).toBeUndefined();
+    });
+
+    it('should return user if any for the given credentials', async () => {
+      const mokedUser = { id: 1, createdAt };
+      jest.spyOn(userRepository, 'getByExternalUserId').mockResolvedValue(mokedUser);
+      
+      const user = await userController.getByExternalUserId([credential]);
+
+      expect(user).toEqual(mokedUser);
     });
   });
 });

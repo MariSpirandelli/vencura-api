@@ -1,7 +1,7 @@
 import bunyan from 'bunyan';
 import { Router, Response } from 'express';
 import userController from '../core/user';
-import { BadRequestError, InternalError } from '../infrastructure/express/errors';
+import { BadRequestError, InternalError, NotFoundError } from '../infrastructure/express/errors';
 import { asyncHandler } from '../infrastructure/express/middlewares/asyncHandler';
 import auth from '../infrastructure/express/middlewares/auth';
 import { AuthRequest } from '../types/authRequest';
@@ -19,7 +19,7 @@ router.get(
 
     const user = await userController.getByExternalUserId(authInfo.verifiedCredentials);
     if (!user) {
-      throw new BadRequestError('User not logged');
+      throw new NotFoundError('User not found');
     }
 
     try {

@@ -69,8 +69,10 @@ class UserController implements IUserController {
     return this.credentialControler.create(existentCredentials[0].userId, newCredentials);
   }
 
-  getByExternalUserId(externalUserId: string): Promise<IUser | undefined> {
-    return this.userRepository.getByExternalUserId(externalUserId);
+  getByExternalUserId(verifiedCredentials: Credential[]): Promise<IUser | undefined> {
+    const externalUserIds = verifiedCredentials.map((credential) => credential.userId);
+    
+    return this.userRepository.getByExternalUserId(externalUserIds);
   }
 }
 

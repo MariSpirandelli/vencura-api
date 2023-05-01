@@ -19,10 +19,10 @@ class UserRepository implements IUserRepository {
     return User.query().where({ id }).select().first();
   }
 
-  async getByExternalUserId(externalUserId: string): Promise<IUser | undefined> {
+  async getByExternalUserId(externalUserIds: string[]): Promise<IUser | undefined> {
     return User.query()
       .leftJoin('external_credentials', 'external_credentials.user_id', 'users.id')
-      .where('external_credentials.external_user_id', externalUserId)
+      .whereIn('external_credentials.external_user_id', externalUserIds)
       .first();
   }
 }

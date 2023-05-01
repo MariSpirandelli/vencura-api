@@ -17,7 +17,7 @@ router.get(
   asyncHandler(async (req: AuthRequest, res: Response) => {
     const authInfo = req.authInfo;
 
-    const user = await userController.getByExternalUserId(authInfo.verifiedCredentials[0].userId);
+    const user = await userController.getByExternalUserId(authInfo.verifiedCredentials);
     if (!user) {
       throw new BadRequestError('User not logged');
     }

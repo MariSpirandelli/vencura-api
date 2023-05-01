@@ -1,10 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt, { Algorithm } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import config from '../../config';
-import bunyan from 'bunyan';
 import { Credential, AuthInfo } from '../../../types/authRequest';
-
-const logger = bunyan.createLogger({ name: 'express::middlewares::auth' });
 
 export default async function auth(req: Request, res: Response, next: NextFunction) {
   const token = req.headers.authorization?.replace('Bearer ', '') || '';

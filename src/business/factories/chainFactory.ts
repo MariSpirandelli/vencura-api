@@ -9,7 +9,7 @@ class ChainFactory {
         return new Wallet<Ether>(new Ether());
 
       default:
-        throw new Error('Vehicle not supported');
+        throw new Error('Chain not supported');
     }
   }
 }

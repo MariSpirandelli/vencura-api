@@ -7,7 +7,7 @@ describe('User repository', () => {
   beforeAll(() => {
     const knex = (global as any).__KNEX__;
     User.knex(knex);
-    ExternalCredential.knex((global as any).__KNEX__);
+    ExternalCredential.knex(knex);
   });
   afterAll(async () => {
     await ExternalCredential.query().delete();
@@ -21,7 +21,7 @@ describe('User repository', () => {
       expect(user.id).not.toBeNull();
     });
   });
-  describe('When doing other operatins', () => {
+  describe('When doing other operations', () => {
     let savedUser: IUser;
     const name = 'testName';
     beforeAll(async () => {

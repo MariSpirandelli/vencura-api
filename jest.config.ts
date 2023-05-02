@@ -6,6 +6,7 @@ export default {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
+  testEnvironment: `<rootDir>/jest.environment.ts`,
   coverageThreshold: {
     global: {
       branches: 70,

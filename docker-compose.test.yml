@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  # api
+  test:
+    build: .
+    working_dir: /usr/src/app/
+    volumes:
+      - ./:/usr/src/app
+    command: bash -c 'while !</dev/tcp/db-test/5432; do sleep 1; done; yarn test'
+    environment:
+      - NODE_ENV=test
+      - DATABASE_URL=postgresql://user:password@db-test/vencura-test
+    depends_on:
+      - db-test
+
+  # database
+  db-test:
+    image: postgres:15
+    ports:
+      - 5432
+    command: postgres -D /run/pgsql-15-data -F -c logging_collector=on
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vencura-test
+      PGDATA: /run/pgsql-15-data
+      LOGGING_COLLECTOR: 'on'

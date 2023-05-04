@@ -1,9 +1,8 @@
 import ITransaction from '../../models/interfaces/iTransaction';
-import { TransactionInput } from '../../models/transaction';
+import { Transaction, TransactionInput } from '../../models/transaction';
+import { IBaseRepository } from './iBaseRepository';
 
-export interface ITransactionRepository {
-  persist: (userWallet: TransactionInput) => Promise<ITransaction>;
+export interface ITransactionRepository extends IBaseRepository<Transaction> {
   fetchAll: (userId: number) => Promise<ITransaction[]>;
-  fetch: (id: number) => Promise<ITransaction | undefined>;
   getByIdempotencyKey: (idempotencyKey: string) => Promise<ITransaction | undefined>;
 }

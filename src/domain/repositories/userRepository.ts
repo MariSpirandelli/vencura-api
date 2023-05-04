@@ -1,5 +1,5 @@
 import { IUser } from '../models/interfaces/iUser';
-import { UserInput, User } from '../models/user';
+import { User } from '../models/user';
 import BaseRepository from './baseRepository';
 import { IUserRepository } from './interfaces/iUserRepository';
 

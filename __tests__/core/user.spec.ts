@@ -32,7 +32,7 @@ describe('User core', () => {
   describe('When creating user', () => {
     it('it should save user, update external credentials and create and save a new vencura wallet', async () => {
       const mokedUser = { id: 1, createdAt };
-      jest.spyOn(userRepository, 'persist').mockResolvedValue(mokedUser);
+      jest.spyOn(userRepository, 'persist').mockResolvedValue(mokedUser as any);
       const credentialSpy = jest.spyOn(credentialControler, 'create').mockResolvedValue([savedCredential]);
       const userWalletSpy = jest.spyOn(userWalletController, 'create').mockResolvedValue('fakeuserwalletaddress');
 
@@ -54,7 +54,7 @@ describe('User core', () => {
 
     it('it should throw exception if an error ocurrs while creating user wallets', async () => {
       const mokedUser = { id: 1, createdAt };
-      jest.spyOn(userRepository, 'persist').mockResolvedValue(mokedUser);
+      jest.spyOn(userRepository, 'persist').mockResolvedValue(mokedUser as any);
       const mokedUserWalletCreate = jest.fn(() => {
         throw new Error('Transaction failed');
       });

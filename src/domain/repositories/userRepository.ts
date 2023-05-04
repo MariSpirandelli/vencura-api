@@ -1,24 +1,9 @@
 import { IUser } from '../models/interfaces/iUser';
 import { UserInput, User } from '../models/user';
+import BaseRepository from './baseRepository';
 import { IUserRepository } from './interfaces/iUserRepository';
 
-class UserRepository implements IUserRepository {
-  async persist(user: UserInput): Promise<IUser> {
-    return User.query().insert(user).returning('*');
-  }
-
-  async update(id: number, user: UserInput): Promise<IUser | undefined> {
-    return User.query()
-      .update({ ...user })
-      .where({ id })
-      .returning('*')
-      .first();
-  }
-
-  async fetch(id: number): Promise<IUser | undefined> {
-    return User.query().where({ id }).select().first();
-  }
-
+class UserRepository extends BaseRepository<User> implements IUserRepository {
   async getByExternalUserId(externalUserIds: string[]): Promise<IUser | undefined> {
     return User.query()
       .leftJoin('external_credentials', 'external_credentials.user_id', 'users.id')
@@ -27,5 +12,5 @@ class UserRepository implements IUserRepository {
   }
 }
 
-const userRepository = new UserRepository();
+const userRepository = new UserRepository(User);
 export default userRepository;

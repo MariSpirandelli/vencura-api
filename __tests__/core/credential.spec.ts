@@ -33,7 +33,7 @@ describe('Credential core', () => {
 
   describe('When creating credentials', () => {
     it('should parse right the data before saving', async () => {
-      const repoSpy = jest.spyOn(credentialRepo, 'persist').mockImplementation((_: ExternalCredentialInput[]) => Promise.resolve([expectedResultData]));
+      const repoSpy = jest.spyOn(credentialRepo, 'persistMany').mockImplementation((_: ExternalCredentialInput[]) => Promise.resolve([expectedResultData]));
       const result = await credentialController.create(userId, [credential]);
 
       expect(repoSpy).toBeCalledWith([expectedParsedData]);
@@ -42,7 +42,7 @@ describe('Credential core', () => {
   });
   describe('When updating credentials', () => {
     it('should parse right the data before saving', async () => {
-      const repoSpy = jest.spyOn(credentialRepo, 'update').mockImplementation((_: string, __: ExternalCredentialInput) => Promise.resolve(expectedResultData));
+      const repoSpy = jest.spyOn(credentialRepo, 'updateByExternalUserId').mockImplementation((_: string, __: ExternalCredentialInput) => Promise.resolve(expectedResultData));
       const result = await credentialController.update(userId, credential);
 
       expect(repoSpy).toBeCalledWith(credential.userId, expectedParsedData);

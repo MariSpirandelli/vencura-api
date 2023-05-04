@@ -14,11 +14,11 @@ class CredentialController implements ICredentialController {
       credentials.push(this.parseCredential(userId, credential));
     });
 
-    return this.credentialRepo.persist(credentials);
+    return this.credentialRepo.persistMany(credentials);
   }
 
   update(userId: number, credential: Credential): Promise<IExternalCredential | undefined> {
-    return this.credentialRepo.update(credential.userId, this.parseCredential(userId, credential));
+    return this.credentialRepo.updateByExternalUserId(credential.userId, this.parseCredential(userId, credential));
   }
 
   getByExternalCredentialsList(externalCredentials: string[]): Promise<IExternalCredential[]> {

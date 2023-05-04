@@ -23,12 +23,16 @@ class WalletController implements IWalletController {
     return this.userWalletRepository.fetch(id);
   }
 
-  public async getByUserId(userId: number): Promise<IUserWallet | undefined> {
-    return (await this.userWalletRepository.getByUserId(userId))[0];
+  public getByUserId(userId: number): Promise<IUserWallet[]> {
+    return this.userWalletRepository.getByUserId(userId);
+  }
+
+  public getDefaultByUserId(userId: number): Promise<IUserWallet | undefined> {
+    return this.userWalletRepository.getDefaultByUserId(userId);
   }
 
   public async getBalanceByUserId(userId: number): Promise<WalletBalanceInfo> {
-    const userWallet = (await this.userWalletRepository.getByUserId(userId))[0];
+    const userWallet = await this.userWalletRepository.getDefaultByUserId(userId);
 
     if (!userWallet) {
       throw new NotFoundError('Wallet not found');
@@ -49,7 +53,7 @@ class WalletController implements IWalletController {
   }
 
   public async signUserMessage(userId: number, rawMessage: string): Promise<string> {
-    const userWallet = (await this.userWalletRepository.getByUserId(userId))[0];
+    const userWallet = await this.userWalletRepository.getDefaultByUserId(userId);
 
     if (!userWallet) {
       throw new NotFoundError('Wallet not found');

@@ -7,6 +7,10 @@ class UserWalletRepository extends BaseRepository<UserWallet> implements IUserWa
   async getByUserId(userId: number): Promise<IUserWallet[]> {
     return UserWallet.query().where('user_id', userId);
   }
+
+  async getDefaultByUserId(userId: number): Promise<IUserWallet | undefined> {
+    return UserWallet.query().where('user_id', userId).first();
+  }
 }
 
 const userWalletRepository = new UserWalletRepository(UserWallet);

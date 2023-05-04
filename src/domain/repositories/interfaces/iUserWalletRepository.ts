@@ -1,8 +1,6 @@
 import { IUserWallet } from '../../models/interfaces/iUserWallet';
-import { UserWalletInput } from '../../models/userWallet';
-
-export interface IUserWalletRepository {
-  persist: (userWallet: UserWalletInput) => Promise<IUserWallet>;
-  fetch: (id: number) => Promise<IUserWallet | undefined>;
+import { UserWallet } from '../../models/userWallet';
+import { IBaseRepository } from './iBaseRepository';
+export interface IUserWalletRepository extends IBaseRepository<UserWallet> {
   getByUserId: (userId: number) => Promise<IUserWallet[]>;
 }

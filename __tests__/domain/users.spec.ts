@@ -4,10 +4,12 @@ import { User } from '../../src/domain/models/user';
 import userRepository from '../../src/domain/repositories/userRepository';
 
 describe('User repository', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
     const knex = (global as any).__KNEX__;
     User.knex(knex);
     ExternalCredential.knex(knex);
+    await ExternalCredential.query().delete();
+    await User.query().delete();
   });
   afterAll(async () => {
     await ExternalCredential.query().delete();

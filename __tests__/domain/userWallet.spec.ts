@@ -12,6 +12,9 @@ describe('User wallet repository', () => {
     const knex = (global as any).__KNEX__;
     User.knex(knex);
     UserWallet.knex(knex);
+    await UserWallet.query().delete();
+    await User.query().delete();
+    
     savedUser = await userRepository.persist({ email: 'test@test.com', name: 'testName' });
   });
   afterAll(async () => {

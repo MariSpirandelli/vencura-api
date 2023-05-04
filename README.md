@@ -42,7 +42,11 @@ Make sure to rename the file `.env-sample` to `.env` and in case you're not usin
 
 ## How to run tests
 
-1. run command `yarn test` or `npm test`
+1. Start all necessary containers with `docker-compose -f docker-compose.test.yml up`
+
+1. Enter the test container with `docker-compose -f docker-compose.test.yml run --rm test bash`
+
+1. Run all tests with `yarn test`.
 
 # REST API
 

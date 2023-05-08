@@ -1,13 +1,10 @@
 import IExternalCredential from '../../models/interfaces/iExternalCredential';
-import { ExternalCredentialInput } from '../../models/externalCredential';
+import { ExternalCredential, ExternalCredentialInput } from '../../models/externalCredential';
+import { IBaseRepository } from './iBaseRepository';
 
-export interface ICredentialRepository {
-  persist: (credential: ExternalCredentialInput[]) => Promise<IExternalCredential[]>;
-  update: (
-    externalCredentialId: string,
-    credential: ExternalCredentialInput,
-  ) => Promise<IExternalCredential | undefined>;
-  fetch: (externalCredentialId: number) => Promise<IExternalCredential | undefined>;
+export interface ICredentialRepository extends IBaseRepository<ExternalCredential> {
+  persistMany: (credentials: ExternalCredentialInput[]) => Promise<IExternalCredential[]>;
+  updateByExternalUserId: (externalUserId: string, credential: ExternalCredentialInput) => Promise<IExternalCredential | undefined>
   getByExternalCredentialsList: (externalCredentials: string[]) => Promise<IExternalCredential[]>;
   getByExternalCredentialId: (externalCredentialId: string) => Promise<IExternalCredential | undefined>;
 }

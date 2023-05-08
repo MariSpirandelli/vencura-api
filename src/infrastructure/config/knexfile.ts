@@ -3,6 +3,10 @@ if (process.env.NODE_ENV === 'development') {
   connection =
     process.env.DATABASE_URL ||
     'postgresql://user:password@db:5432/vencura-dev?schema=public';
+} else if (process.env.NODE_ENV === 'test') {
+  connection =
+    process.env.DATABASE_URL ||
+    'postgresql://user:password@db-test:5432/vencura-test?schema=public';
 } else {
   connection = {
     connectionString:

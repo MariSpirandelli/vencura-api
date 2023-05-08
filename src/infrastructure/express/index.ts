@@ -44,7 +44,7 @@ const createServer = () => {
       user = await userControl.create(externalInfo);
     } else {
       user = await Promise.all([
-        userControl.getByExternalUserId(verifiedCredentials[0].userId),
+        userControl.getByExternalUserId(verifiedCredentials),
         userControl.updateCredentials(externalInfo),
       ]);
     }

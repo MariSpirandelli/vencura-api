@@ -4,7 +4,7 @@ import { BadRequestError } from '../infrastructure/express/errors';
 import IWallet from './interfaces/iWallet';
 
 export default class Wallet<T extends IChain> implements IWallet {
-  constructor(private chain: T) {}
+  constructor(readonly chain: T) {}
 
   public async create(): Promise<WalletInfo> {
     return await this.chain.create();

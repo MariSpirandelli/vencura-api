@@ -5,7 +5,7 @@ import { asyncHandler } from '../infrastructure/express/middlewares/asyncHandler
 import walletController from '../core/wallet';
 import { AuthRequest } from '../types/authRequest';
 import userController from '../core/user';
-import { BadRequestError, InternalError } from '../infrastructure/express/errors';
+import { BadRequestError, InternalError, NotFoundError } from '../infrastructure/express/errors';
 import transactionController from '../core/transaction';
 
 const logger = bunyan.createLogger({ name: 'routes::wallet' });
@@ -18,9 +18,9 @@ router.get(
   asyncHandler(async (req: AuthRequest, res: Response) => {
     const authInfo = req.authInfo;
 
-    const user = await userController.getByExternalUserId(authInfo.verifiedCredentials[0].userId);
+    const user = await userController.getByExternalUserId(authInfo.verifiedCredentials);
     if (!user) {
-      throw new BadRequestError('User not logged');
+      throw new NotFoundError('User not found');
     }
 
     try {
@@ -40,9 +40,9 @@ router.post(
   asyncHandler(async (req: AuthRequest, res: Response) => {
     const authInfo = req.authInfo;
 
-    const user = await userController.getByExternalUserId(authInfo.verifiedCredentials[0].userId);
+    const user = await userController.getByExternalUserId(authInfo.verifiedCredentials);
     if (!user) {
-      throw new BadRequestError('User not logged');
+      throw new NotFoundError('User not found');
     }
 
     const { message } = req.body;
@@ -66,9 +66,9 @@ router.post(
   asyncHandler(async (req: AuthRequest, res: Response) => {
     const authInfo = req.authInfo;
 
-    const user = await userController.getByExternalUserId(authInfo.verifiedCredentials[0].userId);
+    const user = await userController.getByExternalUserId(authInfo.verifiedCredentials);
     if (!user) {
-      throw new BadRequestError('User not logged');
+      throw new NotFoundError('User not found');
     }
 
     const { idempotencyKey, fromUserWalletId, toWalletAddress, amount } = req.body;
